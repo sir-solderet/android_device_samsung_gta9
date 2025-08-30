@@ -18,9 +18,9 @@ PRODUCT_PACKAGES += \
     com.android.hardware.boot \
     android.hardware.boot-service.default_recovery
 
-#PRODUCT_PACKAGES += \
-#    create_pl_dev \
-#    create_pl_dev.recovery
+PRODUCT_PACKAGES += \
+    create_pl_dev \
+    create_pl_dev.recovery
 
 # Audio
 PRODUCT_PACKAGES += \
