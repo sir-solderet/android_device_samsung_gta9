@@ -1,3 +1,4 @@
+prebuilt/*.img filter=lfs diff=lfs merge=lfs -text
 prebuilt/kernel !text !filter !merge !diff
 prebuilt/*.img !text !filter !merge !diff
 prebuilt/*.cpio !text !filter !merge !diff
