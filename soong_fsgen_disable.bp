@@ -1,0 +1,30 @@
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
+// Completely disable the filesystem generator
+bootstrap_go_package {
+    name: "soong-fsgen",
+    pkgPath: "android/soong/fsgen",
+    srcs: [],
+    pluginFor: ["soong_build"],
+    visibility: ["//visibility:public"],
+}
+
+// Override any existing soong_filesystem_creator definitions
+genrule {
+    name: "soong_filesystem_creator",
+    srcs: [],
+    cmd: "touch $(out)",
+    out: ["dummy.txt"],
+    visibility: ["//visibility:public"],
+}
+
+// Alternative gensrcs version if needed
+gensrcs {
+    name: "soong_filesystem_creator_alt", 
+    srcs: [],
+    tools: [],
+    cmd: "true",
+    output_extension: "txt",
+}
