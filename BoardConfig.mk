@@ -8,9 +8,6 @@ DEVICE_PATH := device/samsung/gta9
 VENDOR_PATH := $(TOP)/vendor/samsung/gta9
 #KERNEL_PATH := $(TOP)/kernel/samsung/gta9
 
-# Inherit the proprietary files
-include vendor/samsung/gta9/BoardConfigVendor.mk
-
 # A/B & recovery
 AB_OTA_UPDATER := false
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
@@ -216,3 +213,5 @@ WIFI_DRIVER_STATE_OFF := "0"
 WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
 WIFI_HIDL_FEATURE_DUAL_INTERFACE := true
 
+# Inherit the proprietary files
+include vendor/samsung/gta9/BoardConfigVendor.mk
