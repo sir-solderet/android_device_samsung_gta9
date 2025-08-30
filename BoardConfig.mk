@@ -55,12 +55,6 @@ BOARD_KERNEL_SEPARATED_DTBO := true
 DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/manifest.xml
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := \
     $(DEVICE_PATH)/framework_compatibility_matrix.xml
-
-# Init
-# TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):init_samsung_gta9
-TARGET_RECOVERY_DEVICE_MODULES := \
-    librecovery_ui \
-    init_samsung_gta9
     
 # Enable vendor_dlkm partition
 BOARD_USES_VENDOR_DLKMIMAGE := true
