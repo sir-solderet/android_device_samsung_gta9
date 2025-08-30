@@ -204,6 +204,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     init.recovery.mt6789.rc
 
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/fstab.mt6789::$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.mt6789
+
 # PRODUCT_COPY_FILES += \
     device/samsung/gta9/rootdir/etc/ueventd.mt6789.rc:recovery/root/ueventd.mt6789.rc \ # not at all.
 #   device/samsung/gta9/rootdir/etc/ueventd.mt6789.rc:$(TARGET_COPY_OUT_VENDOR)/etc/ueventd.mt6789.rc 
