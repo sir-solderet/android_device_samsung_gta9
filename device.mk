@@ -32,12 +32,6 @@ PRODUCT_PACKAGES += \
     audio.bluetooth.default:32 \
     android.hardware.bluetooth.audio-impl:32
 
-# Audio - Guard MTK service
-#ifneq ($(wildcard vendor/samsung/gta9/Android.bp),)
-#PRODUCT_PACKAGES += \
-    #MtkInCallService
-#endif
-
 PRODUCT_PACKAGES += \
     libdynproc:32 \
     libhapticgenerator:32
@@ -57,7 +51,7 @@ PRODUCT_COPY_FILES += \
 # Display
 PRODUCT_PACKAGES += \
     android.hardware.graphics.composer@2.1-service \
-#    android.hardware.memtrack-service.mediatek-mali \
+   android.hardware.memtrack-service.mediatek-mali \
 
 # DRM
 PRODUCT_PACKAGES += \
@@ -93,10 +87,12 @@ PRODUCT_PACKAGES += \
     android.hardware.health@2.1-service
 
 # IMS
-#PRODUCT_BOOT_JARS += \
-#    mediatek-common \
-#    mediatek-framework \
-#    mediatek-ims-base \
+PRODUCT_BOOT_JARS += \
+    mediatek-common \
+    mediatek-framework \
+    mediatek-ims-base \
+# you want to build these, they will come from vendor 
+# but will be defined in device makefile
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/privapp-permissions-com.mediatek.ims.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/privapp-permissions-com.mediatek.ims.xml
@@ -177,16 +173,16 @@ PRODUCT_PACKAGES += \
 # Power
 PRODUCT_PACKAGES += \
     android.hardware.power-service.lineage-libperfmgr \
-#    vendor.mediatek.hardware.mtkpower@1.2-service.stub \
+    vendor.mediatek.hardware.mtkpower@1.2-service.stub \
     libmtkperf_client_vendor \
-#    libmtkperf_client
+    libmtkperf_client
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.json
 
 # Power Off Alarm
-#PRODUCT_PACKAGES += \
-#    PowerOffAlarm
+PRODUCT_PACKAGES += \
+    PowerOffAlarm
 
 # Properties
 include $(LOCAL_PATH)/vendor_logtag.mk
@@ -198,34 +194,43 @@ PRODUCT_PACKAGES += \
     init.connectivity.rc \
     init.modem.rc \
     init.mt6789.rc \
-#    init.mt6789.power.rc \
+    init.mt6789.power.rc \
     init.mt6789.usb.rc \
     init.project.rc \
     init.sensor_2_0.rc \
     init.target.rc \
     ueventd.mt6789.rc
+# really unsure why these were commented out
+# all init scripts are needed, especially target.rc for early init
+# device specific ueventd, among other things needed for drivers 
+# to know what they are doing, and what permissions they have
 
 PRODUCT_PACKAGES += \
     init.recovery.mt6789.rc
 
-PRODUCT_COPY_FILES += \
-    device/samsung/gta9/rootdir/etc/ueventd.mt6789.rc:recovery/root/ueventd.mt6789.rc \
-    device/samsung/gta9/rootdir/etc/ueventd.mt6789.rc:$(TARGET_COPY_OUT_VENDOR)/etc/ueventd.mt6789.rc
+# PRODUCT_COPY_FILES += \
+    device/samsung/gta9/rootdir/etc/ueventd.mt6789.rc:recovery/root/ueventd.mt6789.rc \ # not at all.
+#   device/samsung/gta9/rootdir/etc/ueventd.mt6789.rc:$(TARGET_COPY_OUT_VENDOR)/etc/ueventd.mt6789.rc 
+# Whenever you can, build things using the .bp system. Its the "modern" iteration of the .mk which is 
+# eventually going to be deprecated, not any time soon but it will
+# The blueprint system has its benefits..
 
 # device/samsung/gta9/device.mk (or your product .mk)
-PRODUCT_VENDOR_VINTF_FRAGMENTS += vendor/samsung/gta9/proprietary/etc/vintf/compatibility_matrix.xml
-
-PRODUCT_VENDOR_VINTF_FRAGMENTS += vendor/samsung/gta9/proprietary/etc/vintf/manifest.xml
-
+# PRODUCT_VENDOR_VINTF_FRAGMENTS += vendor/samsung/gta9/proprietary/etc/vintf/compatibility_matrix.xml
+#
+#PRODUCT_VENDOR_VINTF_FRAGMENTS += vendor/samsung/gta9/proprietary/etc/vintf/manifest.xml
+# definitely not
+ 
 # Sensors
-ifneq ($(wildcard hardware/samsung/sensors/Android.bp),)
+# ifneq ($(wildcard hardware/samsung/sensors/Android.bp),)
 PRODUCT_PACKAGES += \
     android.hardware.sensors@2.0-subhal-impl-1.0:64 \
     android.hardware.sensors-service.samsung-multihal
-else
-PRODUCT_PACKAGES += \
+#else           ### why, hardware/samsung is imported as a namespace
+                ### so the system knows where to look to find it.
+#PRODUCT_PACKAGES += \
 #    android.hardware.sensors@2.0-service-multihal
-endif
+# endif
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/hals.conf
@@ -245,9 +250,6 @@ PRODUCT_SOONG_NAMESPACES += \
 PRODUCT_PACKAGES += \
     android.hardware.thermal@2.0-impl
 
-# PRODUCT_PACKAGES += \
-    android.hardware.thermal@2.0.vendor
-
 # USB
 PRODUCT_PACKAGES += \
     android.hardware.usb@1.3.vendor \
@@ -266,14 +268,15 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     wpa_supplicant \
     hostapd \
-#    libwifi-hal-wrapper \
+    libwifi-hal-wrapper \
     android.hardware.wifi-service
-
+# not sure why these hals were commented out either
 PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(LOCAL_PATH)/configs/wifi/,$(TARGET_COPY_OUT_VENDOR)/etc/wifi)
 
 # Inherit vendor tree
-$(call inherit-product, vendor/samsung/gta9/vendor.mk)
+# $(call inherit-product, vendor/samsung/gta9/vendor.mk)
+## not sure what this is but no
 
 # Inherit the proprietary files
 $(call inherit-product, vendor/samsung/gta9/gta9-vendor.mk)
