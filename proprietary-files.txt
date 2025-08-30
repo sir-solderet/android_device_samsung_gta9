@@ -561,6 +561,22 @@ vendor/lib64/vendor.mediatek.hardware.pq@2.7.so
 vendor/lib64/vendor.mediatek.hardware.pq@2.8.so
 vendor/lib64/vendor.mediatek.hardware.pq@2.9.so
 
+# Touchscreen / Display panel firmware
+vendor/firmware/hx83102e_lc_hkc_firmware.bin
+vendor/firmware/hx83102e_lc_hkc_mpfw.bin
+vendor/firmware/hx83102e_xx_inx_firmware.bin
+vendor/firmware/hx83102e_xx_inx_mpfw.bin
+vendor/firmware/hx83102e_cd_inx_firmware.bin
+vendor/firmware/hx83102e_cd_inx_new_firmware.bin
+vendor/firmware/hx83102e_cd_inx_new_mpfw.bin
+vendor/firmware/hx83102e_cd_inx_mpfw.bin
+vendor/firmware/hx83102e_gx_hsd_firmware.bin
+vendor/firmware/hx83102e_gx_hsd_mpfw.bin
+vendor/firmware/jd9366tc_xx_hkc_firmware.bin
+vendor/firmware/nt36523d_lc_hsd_firmware.bin
+vendor/firmware/nt36523d_lc_hsd_mpfw.bin
+vendor/firmware/nl9951_gx_boe.bin
+
 # DRM
 vendor/bin/hw/android.hardware.drm@1.4-service.widevine
 vendor/etc/init/android.hardware.drm@1.4-service.widevine.rc
@@ -576,6 +592,20 @@ vendor/lib64/mt6789/libmtk_drvb.so
 vendor/firmware/fm_cust.cfg
 vendor/firmware/mt6631_fm_v1_coeff.bin
 vendor/firmware/mt6631_fm_v1_patch.bin
+vendor/firmware/mt6630_fm_v1_patch.bin
+vendor/firmware/mt6630_fm_v1_coeff.bin
+vendor/firmware/mt6630_fm_v2_patch.bin
+vendor/firmware/mt6630_fm_v2_patch_tx.bin
+vendor/firmware/mt6630_fm_v2_coeff.bin
+vendor/firmware/mt6630_fm_v2_coeff_tx.bin
+vendor/firmware/mt6632_fm_v1_patch.bin
+vendor/firmware/mt6632_fm_v1_coeff.bin
+vendor/firmware/mt6635_fm_v1_patch.bin
+vendor/firmware/mt6635_fm_v1_coeff.bin
+vendor/firmware/mt6627_fm_v1_patch.bin
+vendor/firmware/mt6627_fm_v1_coeff.bin
+vendor/firmware/soc_fm_v1_patch.bin
+vendor/firmware/soc_fm_v1_coeff.bin
 
 # Fuelgauge
 vendor/bin/fuelgauged
@@ -912,10 +942,13 @@ vendor/lib64/libksensor.so
 # Wi-Fi
 vendor/bin/wlan_assistant
 vendor/etc/init/wlan_assistant.rc
-vendor/firmware/WIFI_RAM_CODE_soc2_2_1d_1.bin
-vendor/firmware/WIFI_RAM_CODE_soc2_2_1e_1.bin
 vendor/firmware/wifi.cfg
 vendor/lib64/libwifi-hal.so
-
-# Shared-libs
-
+vendor/firmware/WIFI_RAM_CODE_soc2_2_1d_1.bin
+vendor/firmware/WIFI_RAM_CODE_soc2_2_1e_1.bin
+vendor/firmware/soc2_2_ram_wifi_1d_1_hdr.bin
+vendor/firmware/soc2_2_ram_wifi_1e_1_hdr.bin
+vendor/firmware/soc2_2_ram_bt_1d_1_hdr.bin
+vendor/firmware/soc2_2_ram_bt_1e_1_hdr.bin
+vendor/firmware/soc2_2_ram_mcu_1d_1_hdr.bin
+vendor/firmware/soc2_2_ram_mcu_1e_1_hdr.bin

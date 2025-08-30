@@ -35,9 +35,9 @@ PRODUCT_COPY_FILES += \
     frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml
 
 # Boot
-PRODUCT_PACKAGES += \
-    create_pl_dev \
-    create_pl_dev.recovery
+#PRODUCT_PACKAGES += \
+#    create_pl_dev \
+#    create_pl_dev.recovery
 
 # Cgroup
 PRODUCT_COPY_FILES += \
@@ -47,7 +47,7 @@ PRODUCT_COPY_FILES += \
 # Display
 PRODUCT_PACKAGES += \
     android.hardware.graphics.composer@2.1-service \
-   android.hardware.memtrack-service.mediatek-mali \
+    android.hardware.memtrack-service.mediatek \
 
 # DRM
 PRODUCT_PACKAGES += \
@@ -169,7 +169,8 @@ PRODUCT_PACKAGES += \
 # Power
 PRODUCT_PACKAGES += \
     android.hardware.power-service.lineage-libperfmgr \
-    vendor.mediatek.hardware.mtkpower@1.2-service.stub \
+    vendor.mediatek.hardware.mtkpower@1.0-service \
+    vendor.samsung.hardware.miscpower@2.0-service \
     libmtkperf_client_vendor \
     libmtkperf_client
 
@@ -177,8 +178,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.json
 
 # Power Off Alarm
-PRODUCT_PACKAGES += \
-    PowerOffAlarm
+#PRODUCT_PACKAGES += \
+#    PowerOffAlarm
+# Samsung doesn’t ship this, because they use their own alarm/power service in framework.
 
 # Properties
 include $(LOCAL_PATH)/vendor_logtag.mk
@@ -190,7 +192,6 @@ PRODUCT_PACKAGES += \
     init.connectivity.rc \
     init.modem.rc \
     init.mt6789.rc \
-    init.mt6789.power.rc \
     init.mt6789.usb.rc \
     init.project.rc \
     init.sensor_2_0.rc \
@@ -223,8 +224,8 @@ PRODUCT_COPY_FILES += \
 # Sensors
 # ifneq ($(wildcard hardware/samsung/sensors/Android.bp),)
 PRODUCT_PACKAGES += \
-    android.hardware.sensors@2.0-subhal-impl-1.0:64 \
-    android.hardware.sensors-service.samsung-multihal
+    android.hardware.sensors@2.0-service-mediatek \
+#    android.hardware.sensors@2.0-subhal-impl-1.0:64 \  ## Samsung bundles sensor HAL differently.
 #else           ### why, hardware/samsung is imported as a namespace
                 ### so the system knows where to look to find it.
 #PRODUCT_PACKAGES += \
@@ -267,15 +268,11 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     wpa_supplicant \
     hostapd \
-    libwifi-hal-wrapper \
+    libwifi-hal \
     android.hardware.wifi-service
 # not sure why these hals were commented out either
 PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(LOCAL_PATH)/configs/wifi/,$(TARGET_COPY_OUT_VENDOR)/etc/wifi)
-
-# Inherit vendor tree
-# $(call inherit-product, vendor/samsung/gta9/vendor.mk)
-## not sure what this is but no
 
 # Inherit the proprietary files
 $(call inherit-product, vendor/samsung/gta9/gta9-vendor.mk)
