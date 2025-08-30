@@ -6,17 +6,11 @@
 
 DEVICE_PATH := device/samsung/gta9
 VENDOR_PATH := $(TOP)/vendor/samsung/gta9
-#KERNEL_PATH := $(TOP)/kernel/samsung/gta9
 
-# A/B & recovery
+# A/B 
 AB_OTA_UPDATER := false
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 
-# Board
-TARGET_BOARD_PLATFORM := mt6789
-BOARD_HAS_MTK_HARDWARE := true
-
-# CPU architecture
+# Architecture
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-2a
 TARGET_CPU_VARIANT := cortex-a76
@@ -24,7 +18,6 @@ TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_ABI2 :=
 TARGET_CPU_VARIANT_RUNTIME := cortex-a55
 
-# Secondary (32-bit) ABI support
 TARGET_2ND_ARCH := arm
 TARGET_2ND_ARCH_VARIANT := armv8-2a
 TARGET_2ND_CPU_VARIANT := cortex-a55
@@ -35,7 +28,7 @@ TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_BOOTLOADER_BOARD_NAME := gta9
 TARGET_NO_BOOTLOADER := true
 
-# Boot image args (from recovery.img analysis)
+# Boot image
 BOARD_BOOTIMG_HEADER_VERSION := 4
 BOARD_KERNEL_BASE := 0x40000000
 BOARD_KERNEL_PAGESIZE := 4096
@@ -151,6 +144,10 @@ TARGET_COPY_OUT_VENDOR := vendor
 TARGET_COPY_OUT_SYSTEM_EXT := system_ext
 TARGET_COPY_OUT_ODM := odm
 
+# Platform
+TARGET_BOARD_PLATFORM := mt6789
+BOARD_HAS_MTK_HARDWARE := true
+
 # Properties
 TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
 TARGET_PRODUCT_PROP += $(DEVICE_PATH)/product.prop
@@ -159,9 +156,10 @@ TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
 # Ramdisk compression
 BOARD_RAMDISK_USE_LZMA := true
 
-# Recovery configuration
+# Recovery
 BOARD_INCLUDE_RECOVERY_DTBO := true
-TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
+TARGET_RECOVERY_PIXEL_FORMAT := BGRA_8888
 BOARD_HAS_NO_SELECT_BUTTON := true
 
 # RIL
