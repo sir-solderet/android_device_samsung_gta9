@@ -28,21 +28,34 @@ TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_BOOTLOADER_BOARD_NAME := gta9
 TARGET_NO_BOOTLOADER := true
 
-# Boot image
-BOARD_BOOTIMG_HEADER_VERSION := 4
-BOARD_KERNEL_BASE := 0x40000000
-BOARD_KERNEL_PAGESIZE := 4096
-BOARD_RAMDISK_OFFSET := 0x66f00000
-BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 loop.max_part=7
-BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
-
-BOARD_MKBOOTIMG_ARGS := --base $(BOARD_KERNEL_BASE)
-BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
-BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_KERNEL_PAGESIZE)
-BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
-BOARD_MKBOOTIMG_ARGS += --board "SRPWD26A004"
+# Boot Image
+BOARD_KERNEL_BASE         := 0x3fff8000
+BOARD_KERNEL_OFFSET       := 0x00008000
+BOARD_KERNEL_PAGESIZE     := 4096
+BOARD_RAMDISK_OFFSET      := 0x26f08000
+BOARD_KERNEL_TAGS_OFFSET  := 0x07c88000
+BOARD_DTB_OFFSET          := 0x07c88000
+BOARD_RECOVERY_HEADER_VERSION := 2
+BOARD_BOOT_HEADER_VERSION := 4
 
 BOARD_RAMDISK_USE_LZ4 := true
+BOARD_USES_GENERIC_KERNEL_IMAGE := true
+BOARD_INCLUDE_DTB_IN_BOOTIMG := true
+
+# base and pagesize are usually ignored when BOARD_USES_GENERIC_KERNEL_IMAGE is true,
+# but our bootloader is fussy and cares about these offsets being set correctly.
+BOARD_MKBOOTIMG_ARGS := --base $(BOARD_KERNEL_BASE)
+BOARD_MKBOOTIMG_ARGS += --kernel_offset $(BOARD_KERNEL_OFFSET)
+BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_KERNEL_PAGESIZE)
+BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
+BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
+BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
+BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
+BOARD_RECOVERY_MKBOOTIMG_ARGS += --header_version $(BOARD_RECOVERY_HEADER_VERSION)
+
+BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 bootconfig
+# Boot image config order sourced from this commit:
+# https://github.com/xiaomi-mediatek-devs/android_device_xiaomi_mt6895-common/commit/04f779d187e608f9223e1442d4724d7eaaa4ad2a
 
 # Display
 TARGET_SCREEN_DENSITY := 213
@@ -74,7 +87,6 @@ BOARD_VENDOR_KERNEL_MODULES_LOAD := \
 
 # Prebuilt Images (since kernel source is not booting yet)
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
-BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 BOARD_PREBUILT_DTBIMAGE := $(DEVICE_PATH)/prebuilt/dtb.img
 
 # Kernel
