@@ -11,19 +11,9 @@ VENDOR_PATH := $(TOP)/vendor/samsung/gta9
 # Inherit the proprietary files
 include vendor/samsung/gta9/BoardConfigVendor.mk
 
-PRODUCT_PACKAGES_REMOVE += su
-
 # A/B & recovery
 AB_OTA_UPDATER := false
-TARGET_NO_RECOVERY := false
-BOARD_USES_RECOVERY_AS_BOOT := false
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
-
-# Enable separate recovery build
-TARGET_BUILD_RECOVERY_IMAGE := true
-
-# APEX
-DEXPREOPT_GENERATE_APEX_IMAGE := true
 
 # Board
 TARGET_BOARD_PLATFORM := mt6789
@@ -43,15 +33,6 @@ TARGET_2ND_ARCH_VARIANT := armv8-2a
 TARGET_2ND_CPU_VARIANT := cortex-a55
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
-
-# Enable 64-bit for non-zygote.
-ZYGOTE_FORCE_64 := true
-
-# Include 64-bit mediaserver to support 64-bit only devices
-TARGET_DYNAMIC_64_32_MEDIASERVER := true
-
-# Include 64-bit drmserver to support 64-bit only devices
-TARGET_DYNAMIC_64_32_DRMSERVER := true
 
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := gta9
@@ -73,8 +54,6 @@ BOARD_MKBOOTIMG_ARGS += --board "SRPWD26A004"
 
 # Display
 TARGET_SCREEN_DENSITY := 213
-TARGET_USES_HWC2 := true
-TARGET_USES_VULKAN := true
 
 # DTBO
 BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
@@ -91,8 +70,6 @@ TARGET_RECOVERY_DEVICE_MODULES := \
     librecovery_ui \
     init_samsung_gta9
     
-BOARD_SUPPRESS_SECURE_RECOVERY := true
-
 # Enable vendor_dlkm partition
 BOARD_USES_VENDOR_DLKMIMAGE := true
 TARGET_COPY_OUT_VENDOR_DLKM := vendor_dlkm
@@ -192,13 +169,6 @@ BOARD_HAS_NO_SELECT_BUTTON := true
 
 # RIL
 ENABLE_VENDOR_RIL_SERVICE := true
-
-# SELinux
-SELINUX_IGNORE_NEVERALLOWS := true
-
-# Skip modules installation during kernel build
-BOARD_SKIP_KERNEL_MODULES := true
-TARGET_KERNEL_CHECK_VINTF := false
 
 # SELinux
 include device/mediatek/sepolicy_vndr/SEPolicy.mk
