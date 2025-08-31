@@ -1,8 +1,0 @@
-gz.img
-lk.img
-md1img.img
-preloader.img
-scp.img
-spmfw.img
-sspm.img
-tee.img
