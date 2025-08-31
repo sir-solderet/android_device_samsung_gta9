@@ -267,7 +267,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     wpa_supplicant \
     hostapd \
-    libwifi-hal \
+    libwifi-hal-wrapper \
     android.hardware.wifi-service
 # not sure why these hals were commented out either
 PRODUCT_COPY_FILES += \
