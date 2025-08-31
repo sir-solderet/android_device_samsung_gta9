@@ -44,6 +44,7 @@ lib_fixups: lib_fixups_user_type = {
     **lib_fixups,
     ('vendor.mediatek.hardware.videotelephony@1.0',): lib_fixup_vendor_suffix,
     ('libsink',): lib_fixup_remove,
+    'libuuid': lib_fixup_vendor_suffix,
 }
 
 blob_fixups: blob_fixups_user_type = {
