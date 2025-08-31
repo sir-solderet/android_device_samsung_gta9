@@ -221,15 +221,8 @@ PRODUCT_COPY_FILES += \
 # definitely not
  
 # Sensors
-# ifneq ($(wildcard hardware/samsung/sensors/Android.bp),)
 PRODUCT_PACKAGES += \
-    android.hardware.sensors@2.0-service-mediatek \
-#    android.hardware.sensors@2.0-subhal-impl-1.0:64 \  ## Samsung bundles sensor HAL differently.
-#else           ### why, hardware/samsung is imported as a namespace
-                ### so the system knows where to look to find it.
-#PRODUCT_PACKAGES += \
-#    android.hardware.sensors@2.0-service-multihal
-# endif
+    android.hardware.sensors@2.0-subhal-impl-1.0
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/hals.conf
