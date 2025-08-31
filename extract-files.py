@@ -8,6 +8,7 @@ import os
 import sys
 
 # Add extract-utils to PYTHONPATH
+
 sys.path.insert(
     0,
     os.path.abspath(
@@ -35,16 +36,21 @@ namespace_imports = [
     'hardware/samsung',
 ]
 
+# --- lib fixups ---
 
 def lib_fixup_vendor_suffix(lib: str, partition: str, *args, **kwargs):
     return f'{lib}_{partition}' if partition == 'vendor' else None
 
+# Merge default LineageOS fixups with our overrides
 
 lib_fixups: lib_fixups_user_type = {
     **lib_fixups,
     ('vendor.mediatek.hardware.videotelephony@1.0',): lib_fixup_vendor_suffix,
     ('libsink',): lib_fixup_remove,
+    'libuuid': lib_fixup_vendor_suffix,
 }
+
+# --- Blob fixups for ELF binaries ---
 
 blob_fixups: blob_fixups_user_type = {
     ('vendor/lib64/libcam.utils.sensorprovider.so'): blob_fixup()
@@ -90,6 +96,8 @@ blob_fixups: blob_fixups_user_type = {
     'vendor/lib64/hw/hwcomposer.mtk_common.so': blob_fixup()
         .add_needed('libprocessgroup_shim.so'),
 }  # fmt: skip
+
+# --- Module config ---
 
 module = ExtractUtilsModule(
     'gta9',
