@@ -35,9 +35,9 @@ PRODUCT_COPY_FILES += \
     frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml
 
 # Boot
-#PRODUCT_PACKAGES += \
-#    create_pl_dev \
-#    create_pl_dev.recovery
+PRODUCT_PACKAGES += \
+    create_pl_dev \
+    create_pl_dev.recovery
 
 # Cgroup
 PRODUCT_COPY_FILES += \
@@ -47,7 +47,7 @@ PRODUCT_COPY_FILES += \
 # Display
 PRODUCT_PACKAGES += \
     android.hardware.graphics.composer@2.1-service \
-    android.hardware.memtrack-service.mediatek \
+    android.hardware.memtrack-service.mediatek-mali \
 
 # DRM
 PRODUCT_PACKAGES += \
@@ -178,9 +178,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.json
 
 # Power Off Alarm
-#PRODUCT_PACKAGES += \
-#    PowerOffAlarm
-# Samsung doesn’t ship this, because they use their own alarm/power service in framework.
+PRODUCT_PACKAGES += \
+    PowerOffAlarm
 
 # Properties
 include $(LOCAL_PATH)/vendor_logtag.mk
