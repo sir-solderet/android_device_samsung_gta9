@@ -60,9 +60,21 @@ BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 bootconfig
 # Display
 TARGET_SCREEN_DENSITY := 213
 
-# DTBO
-BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
+# Use prebuilts instead of building
+BOARD_PREBUILT_BOOTIMAGE       := $(DEVICE_PATH)/prebuilt/boot.img
+BOARD_PREBUILT_RECOVERYIMAGE   := $(DEVICE_PATH)/prebuilt/recovery.img
+BOARD_PREBUILT_VENDOR_BOOTIMAGE := $(DEVICE_PATH)/prebuilt/vendor_boot.img
+BOARD_PREBUILT_DTBIMAGE        := $(DEVICE_PATH)/prebuilt/dtb.img
+BOARD_PREBUILT_DTBOIMAGE       := $(DEVICE_PATH)/prebuilt/dtbo.img
+BOARD_PREBUILT_KERNEL          := $(DEVICE_PATH)/prebuilt/kernel
+BOARD_PREBUILT_VBMETAIMAGE     := $(DEVICE_PATH)/prebuilt/vbmeta.img
+
+# Tell build system we’re using prebuilt DTBO and DTB
 BOARD_KERNEL_SEPARATED_DTBO := true
+BOARD_INCLUDE_DTB_IN_BOOTIMG := true
+
+# Prevent duplicate build rules
+TARGET_NO_KERNEL_OVERRIDE := true
 
 # HIDL
 DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/manifest.xml
@@ -85,25 +97,13 @@ BOARD_VENDOR_KERNEL_MODULES_LOAD := \
     vendor_dlkm/lib/modules/snd-soc-mt6789-afe.ko \
     vendor_dlkm/lib/modules/bt_drv_connac1x.ko
 
-# Prebuilt Images (since kernel source is not booting yet)
-TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
-BOARD_PREBUILT_DTBIMAGE := $(DEVICE_PATH)/prebuilt/dtb.img
-
 # Kernel
 #TARGET_KERNEL_ARCH := arm64
 #TARGET_KERNEL_HEADER_ARCH := arm64
 #TARGET_KERNEL_SOURCE := kernel/samsung/gta9
 #TARGET_KERNEL_CONFIG := gta9_defconfig
 #BOARD_KERNEL_IMAGE_NAME := Image.gz
-
-# Kernel Modules
-#BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(KERNEL_PATH)/kernel_build/vboot_dlkm/modules.load))
-#BOARD_RECOVERY_RAMDISK_KERNEL_MODULES_LOAD := $(BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD)
-#BOOT_KERNEL_MODULES := $(BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD)
-#RECOVERY_KERNEL_MODULES := $(BOARD_RECOVERY_RAMDISK_KERNEL_MODULES_LOAD)
-
-#BOARD_VENDOR_RAMDISK_FRAGMENTS := dlkm
-#BOARD_VENDOR_RAMDISK_FRAGMENT.dlkm.KERNEL_MODULE_DIRS := top
+## Kernel built from source is not booting...
 
 # Filesystems
 TARGET_USERIMAGES_USE_EXT4 := true

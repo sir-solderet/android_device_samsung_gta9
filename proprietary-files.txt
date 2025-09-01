@@ -373,10 +373,10 @@ vendor/lib64/mt6789/libcam.hal3a.v3.lsctbl.50.so;SYMLINK=vendor/lib64/libcam.hal
 vendor/lib64/mt6789/libcam.halsensor.hwintegration.so;SYMLINK=vendor/lib64/libcam.halsensor.hwintegration.so
 vendor/lib64/mt6789/libcam.halsensor.so;SYMLINK=vendor/lib64/libcam.halsensor.so
 vendor/lib64/mt6789/libmtkcam_device3_hal.so;SYMLINK=vendor/lib64/libmtkcam_device3_hal.so
-vendor/lib64/mt6789/libcam.iopipe.so;SYMLINK=vendor/lib64/mt6789/libcam.iopipe.so
-vendor/lib64/mt6789/libimageio_plat_drv.so;SYMLINK=vendor/lib64/mt6789/libimageio_plat_drv.so
-vendor/lib64/mt6789/libimageio_plat_pipe.so;SYMLINK=vendor/lib64/mt6789/libimageio_plat_pipe.so
-vendor/lib64/mt6789/libimageio.so;SYMLINK=vendor/lib64/mt6789/libimageio.so 
+vendor/lib64/mt6789/libcam.iopipe.so;SYMLINK=vendor/lib64/libcam.iopipe.so
+vendor/lib64/mt6789/libimageio_plat_drv.so;SYMLINK=vendor/lib64/libimageio_plat_drv.so
+vendor/lib64/mt6789/libimageio_plat_pipe.so;SYMLINK=vendor/lib64/libimageio_plat_pipe.so
+vendor/lib64/mt6789/libimageio.so;SYMLINK=vendor/lib64/libimageio.so 
 vendor/lib64/mt6789/libcam.utils.sensorprovider.so;SYMLINK=vendor/lib64/libcam.utils.sensorprovider.so
 vendor/lib64/mt6789/libcam.vhdr.so;SYMLINK=vendor/lib64/libcam.vhdr.so
 vendor/lib64/mt6789/libcamalgo.lsc.so;SYMLINK=vendor/lib64/libcamalgo.lsc.so
@@ -413,8 +413,8 @@ vendor/lib64/mt6789/libmtkcam_debugutils.so;SYMLINK=vendor/lib64/libmtkcam_debug
 vendor/lib64/mt6789/libmtkcam_diputils.so;SYMLINK=vendor/lib64/libmtkcam_diputils.so
 vendor/lib64/mt6789/libmtkcam_exif.so;SYMLINK=vendor/lib64/libmtkcam_exif.so
 vendor/lib64/mt6789/libmtkcam_grallocutils.so;SYMLINK=vendor/lib64/libmtkcam_grallocutils.so
-vendor/lib64/mt6789/libmtkcam_device3_hidl.so;SYMLINK=vendor/lib64/mt6789/libmtkcam_device3_hidl.so
-vendor/lib64/mt6789/libmtkcam_device3_hidlutils.so;SYMLINK=vendor/lib64/mt6789/libmtkcam_device3_hidlutils.so
+vendor/lib64/mt6789/libmtkcam_device3_hidl.so;SYMLINK=vendor/lib64/libmtkcam_device3_hidl.so
+vendor/lib64/mt6789/libmtkcam_device3_hidlutils.so;SYMLINK=vendor/lib64/libmtkcam_device3_hidlutils.so
 vendor/lib64/mt6789/libmtkcam_featureutils.so;SYMLINK=vendor/lib64/libmtkcam_featureutils.so
 vendor/lib64/mt6789/libmtkcam_hwnode.so;SYMLINK=vendor/lib64/libmtkcam_hwnode.so
 vendor/lib64/mt6789/libmtkcam_hwutils.so;SYMLINK=vendor/lib64/libmtkcam_hwutils.so
@@ -829,9 +829,9 @@ vendor/lib64/vendor.samsung.hardware.gnss@2.0.so
 # IMS
 system_ext/bin/vtservice
 system_ext/etc/init/init.vtservice.rc
-system_ext/framework/mediatek-common.jar:system/framework/mediatek-common.jar;BOOT_JAR
-system_ext/framework/mediatek-framework.jar:system/framework/mediatek-framework.jar;BOOT_JAR
-system_ext/framework/mediatek-ims-base.jar:system/framework/mediatek-ims-base.jar;BOOT_JAR
+system_ext/framework/mediatek-common.jar:system/framework/mediatek-common.jar
+system_ext/framework/mediatek-framework.jar:system/framework/mediatek-framework.jar
+system_ext/framework/mediatek-ims-base.jar:system/framework/mediatek-ims-base.jar
 system_ext/lib64/libcomutils.so
 system_ext/lib64/libimsma.so
 system_ext/lib64/libimsma_adapt.so
@@ -948,14 +948,12 @@ vendor/lib64/vendor.mediatek.hardware.nvram@1.1.so
 vendor/lib64/vendor.mediatek.hardware.power@1.1.so
 vendor/lib64/vendor.mediatek.hardware.power@2.0.so
 vendor/bin/hw/vendor.mediatek.hardware.mtkpower@1.0-service
+vendor/lib/libpower_timer.so
+vendor/lib64/libpower_timer.so
 vendor/etc/init/vendor.mediatek.hardware.mtkpower@1.0-service.rc
 vendor/bin/hw/vendor.samsung.hardware.miscpower@2.0-service
 vendor/etc/init/vendor.samsung.hardware.miscpower@2.0-service.rc
 vendor/lib64/vendor.samsung.hardware.miscpower@2.0.so
-vendor/lib/libmtkperf_client_vendor.so
-vendor/lib64/libmtkperf_client_vendor.so
-system_ext/lib/libmtkperf_client.so
-system_ext/lib64/libmtkperf_client.so
 
 # Radio
 vendor/bin/hw/rild
@@ -1157,4 +1155,3 @@ vendor/firmware/WIFI_RAM_CODE_soc2_2_1d_1.bin
 vendor/firmware/WIFI_RAM_CODE_soc2_2_1e_1.bin
 vendor/lib64/libwifi-hal.so:vendor/lib64/libwifi-hal-mtk.so;FIX_SONAME
 vendor/firmware/wifi.cfg
-vendor/firmware/txpowerctrl.cfg

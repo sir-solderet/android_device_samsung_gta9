@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+DEVICE_PATH := device/samsung/gta9
+
 # Installs gsi keys into ramdisk, to boot a developer GSI with verified boot.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/developer_gsi_keys.mk)
 
@@ -12,6 +14,15 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 
 # Setup dalvik vm configs
 $(call inherit-product, frameworks/native/build/phone-xhdpi-4096-dalvik-heap.mk)
+
+# Disable LineageOS API coverage
+WITHOUT_CHECK_API := true
+
+# Disable Lineage SDK API coverage checks/tests
+PRODUCT_PACKAGES -= \
+    LineagePlatformTests \
+    LineageSettingsProviderTests \
+    lineage-sdk-api-coverage
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -205,7 +216,7 @@ PRODUCT_PACKAGES += \
     init.recovery.mt6789.rc
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/rootdir/fstab.mt6789::$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.mt6789
+    $(LOCAL_PATH)/rootdir/etc/fstab.mt6789::$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.mt6789
 
 # PRODUCT_COPY_FILES += \
     device/samsung/gta9/rootdir/etc/ueventd.mt6789.rc:recovery/root/ueventd.mt6789.rc \ # not at all.
@@ -213,12 +224,6 @@ PRODUCT_COPY_FILES += \
 # Whenever you can, build things using the .bp system. Its the "modern" iteration of the .mk which is 
 # eventually going to be deprecated, not any time soon but it will
 # The blueprint system has its benefits..
-
-# device/samsung/gta9/device.mk (or your product .mk)
-# PRODUCT_VENDOR_VINTF_FRAGMENTS += vendor/samsung/gta9/proprietary/etc/vintf/compatibility_matrix.xml
-#
-#PRODUCT_VENDOR_VINTF_FRAGMENTS += vendor/samsung/gta9/proprietary/etc/vintf/manifest.xml
-# definitely not
  
 # Sensors
 PRODUCT_PACKAGES += \
