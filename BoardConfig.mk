@@ -1,9 +1,10 @@
 #
-# Copyright (C) 2023 The LineageOS Project
+# Copyright (C) 2025 The LineageOS Project
 #
 # SPDX-License-Identifier: Apache-2.0
 #
 
+# Path
 DEVICE_PATH := device/samsung/gta9
 VENDOR_PATH := $(TOP)/vendor/samsung/gta9
 
@@ -39,8 +40,6 @@ BOARD_RECOVERY_HEADER_VERSION := 2
 BOARD_BOOT_HEADER_VERSION := 4
 
 BOARD_RAMDISK_USE_LZ4 := true
-BOARD_USES_GENERIC_KERNEL_IMAGE := true
-BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 
 # base and pagesize are usually ignored when BOARD_USES_GENERIC_KERNEL_IMAGE is true,
 # but our bootloader is fussy and cares about these offsets being set correctly.
@@ -60,21 +59,52 @@ BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 bootconfig
 # Display
 TARGET_SCREEN_DENSITY := 213
 
-# Use prebuilts instead of building
-BOARD_PREBUILT_BOOTIMAGE       := $(DEVICE_PATH)/prebuilt/boot.img
-BOARD_PREBUILT_RECOVERYIMAGE   := $(DEVICE_PATH)/prebuilt/recovery.img
+# Prebuilt kernel & images
+BOARD_USE_PREBUILT_KERNEL := true
+BOARD_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
+BOARD_PREBUILT_BOOTIMAGE := $(DEVICE_PATH)/prebuilt/boot.img
 BOARD_PREBUILT_VENDOR_BOOTIMAGE := $(DEVICE_PATH)/prebuilt/vendor_boot.img
-BOARD_PREBUILT_DTBIMAGE        := $(DEVICE_PATH)/prebuilt/dtb.img
-BOARD_PREBUILT_DTBOIMAGE       := $(DEVICE_PATH)/prebuilt/dtbo.img
-BOARD_PREBUILT_KERNEL          := $(DEVICE_PATH)/prebuilt/kernel
-BOARD_PREBUILT_VBMETAIMAGE     := $(DEVICE_PATH)/prebuilt/vbmeta.img
+BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
+BOARD_PREBUILT_DTBIMAGE := $(DEVICE_PATH)/prebuilt/dtb.img
+BOARD_PREBUILT_VBMETAIMAGE := $(DEVICE_PATH)/prebuilt/vbmeta.img
+BOARD_VENDOR_BOOTIMAGE_PREBUILT_DTB := $(BOARD_PREBUILT_DTBIMAGE)
 
-# Tell build system we’re using prebuilt DTBO and DTB
+# Kernel / DTB / DTBO handling
+TARGET_NO_KERNEL := true
+TARGET_NO_KERNEL_SOURCE := true
+INLINE_KERNEL_BUILDING := false
 BOARD_KERNEL_SEPARATED_DTBO := true
-BOARD_INCLUDE_DTB_IN_BOOTIMG := true
+BOARD_INCLUDE_DTB_IN_BOOTIMG := false
+BOARD_USES_GENERIC_KERNEL_IMAGE := true
 
-# Prevent duplicate build rules
-TARGET_NO_KERNEL_OVERRIDE := true
+# Soong config: force using prebuilt kernel + headers
+SOONG_CONFIG_lineageVars += TARGET_PREBUILT_KERNEL_HEADERS
+TARGET_PREBUILT_KERNEL_HEADERS := $(DEVICE_PATH)/prebuilt/kernel_headers.tar.gz
+
+# Disable rebuilding of prebuilts
+BOARD_BUILD_BOOTIMG         := false
+BOARD_BUILD_DTBOIMG         := false
+BOARD_BUILD_VENDOR_BOOTIMG  := false
+BOARD_BUILD_VBMETAIMAGE     := false
+
+# Kernel build from source
+#TARGET_KERNEL_ARCH := arm64
+#TARGET_KERNEL_HEADER_ARCH := arm64
+#TARGET_KERNEL_SOURCE := kernel/samsung/gta9
+#TARGET_KERNEL_CONFIG := gta9_defconfig
+#BOARD_KERNEL_IMAGE_NAME := Image.gz
+
+#TARGET_NO_KERNEL := false
+#INLINE_KERNEL_BUILDING := true
+#BOARD_USES_GENERIC_KERNEL_IMAGE := true
+
+#BOARD_BUILD_BOOTIMG := true
+#BOARD_BUILD_DTBOIMG := true
+#BOARD_BUILD_VENDOR_BOOTIMG := true
+#BOARD_BUILD_VBMETAIMAGE := true
+
+#BOARD_KERNEL_SEPARATED_DTBO := true
+#BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 
 # HIDL
 DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/manifest.xml
@@ -92,18 +122,10 @@ BOARD_VENDOR_DLKMIMAGE_PARTITION_SIZE := 36188160
 #    $(VENDOR_PATH)/proprietary/vendor_dlkm/lib/modules/*.ko
     
 # Modules to load at boot (order matters)
-BOARD_VENDOR_KERNEL_MODULES_LOAD := \
-    vendor_dlkm/lib/modules/wlan_drv_gen4m_6789.ko \
-    vendor_dlkm/lib/modules/snd-soc-mt6789-afe.ko \
-    vendor_dlkm/lib/modules/bt_drv_connac1x.ko
-
-# Kernel
-#TARGET_KERNEL_ARCH := arm64
-#TARGET_KERNEL_HEADER_ARCH := arm64
-#TARGET_KERNEL_SOURCE := kernel/samsung/gta9
-#TARGET_KERNEL_CONFIG := gta9_defconfig
-#BOARD_KERNEL_IMAGE_NAME := Image.gz
-## Kernel built from source is not booting...
+#BOARD_VENDOR_KERNEL_MODULES_LOAD := \
+#    vendor_dlkm/lib/modules/wlan_drv_gen4m_6789.ko \
+#    vendor_dlkm/lib/modules/snd-soc-mt6789-afe.ko \
+#    vendor_dlkm/lib/modules/bt_drv_connac1x.ko
 
 # Filesystems
 TARGET_USERIMAGES_USE_EXT4 := true

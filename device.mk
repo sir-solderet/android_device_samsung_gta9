@@ -3,8 +3,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-
-DEVICE_PATH := device/samsung/gta9
+LOCAL_PATH := device/samsung/gta9
 
 # Installs gsi keys into ramdisk, to boot a developer GSI with verified boot.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/developer_gsi_keys.mk)
@@ -55,6 +54,14 @@ PRODUCT_COPY_FILES += \
     system/core/libprocessgroup/profiles/cgroups_30.json:$(TARGET_COPY_OUT_VENDOR)/etc/cgroups.json \
     $(LOCAL_PATH)/configs/task_profiles.json:$(TARGET_COPY_OUT_VENDOR)/etc/task_profiles.json
 
+# Copy prebuilt images
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/prebuilt/dtb.img:dtb.img \
+    $(LOCAL_PATH)/prebuilt/vendor_boot.img:vendor_boot.img \
+    $(LOCAL_PATH)/prebuilt/dtbo.img:dtbo.img \
+    $(LOCAL_PATH)/prebuilt/boot.img:boot.img \
+    $(LOCAL_PATH)/prebuilt/vbmeta.img:vbmeta.img
+
 # Display
 PRODUCT_PACKAGES += \
     android.hardware.graphics.composer@2.1-service \
@@ -98,8 +105,6 @@ PRODUCT_BOOT_JARS += \
     mediatek-common \
     mediatek-framework \
     mediatek-ims-base \
-# you want to build these, they will come from vendor 
-# but will be defined in device makefile
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/privapp-permissions-com.mediatek.ims.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/privapp-permissions-com.mediatek.ims.xml
@@ -207,23 +212,12 @@ PRODUCT_PACKAGES += \
     init.sensor_2_0.rc \
     init.target.rc \
     ueventd.mt6789.rc
-# really unsure why these were commented out
-# all init scripts are needed, especially target.rc for early init
-# device specific ueventd, among other things needed for drivers 
-# to know what they are doing, and what permissions they have
 
 PRODUCT_PACKAGES += \
     init.recovery.mt6789.rc
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/etc/fstab.mt6789::$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.mt6789
-
-# PRODUCT_COPY_FILES += \
-    device/samsung/gta9/rootdir/etc/ueventd.mt6789.rc:recovery/root/ueventd.mt6789.rc \ # not at all.
-#   device/samsung/gta9/rootdir/etc/ueventd.mt6789.rc:$(TARGET_COPY_OUT_VENDOR)/etc/ueventd.mt6789.rc 
-# Whenever you can, build things using the .bp system. Its the "modern" iteration of the .mk which is 
-# eventually going to be deprecated, not any time soon but it will
-# The blueprint system has its benefits..
  
 # Sensors
 PRODUCT_PACKAGES += \
