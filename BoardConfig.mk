@@ -60,7 +60,6 @@ BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 bootconfig
 TARGET_SCREEN_DENSITY := 213
 
 # Prebuilt kernel & images
-BOARD_USE_PREBUILT_KERNEL := true
 BOARD_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
 BOARD_PREBUILT_BOOTIMAGE := $(DEVICE_PATH)/prebuilt/boot.img
 BOARD_PREBUILT_VENDOR_BOOTIMAGE := $(DEVICE_PATH)/prebuilt/vendor_boot.img
@@ -68,27 +67,27 @@ BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
 BOARD_PREBUILT_DTBIMAGE := $(DEVICE_PATH)/prebuilt/dtb.img
 BOARD_PREBUILT_VBMETAIMAGE := $(DEVICE_PATH)/prebuilt/vbmeta.img
 BOARD_VENDOR_BOOTIMAGE_PREBUILT_DTB := $(BOARD_PREBUILT_DTBIMAGE)
+BOARD_KERNEL_IMAGE_NAME := boot.img
+BOARD_USE_PREBUILT_KERNEL := true
 
 # Build recovery (use prebuilt kernel)
 BOARD_BUILD_RECOVERYIMAGE := true
 
-# Kernel / DTB / DTBO handling
+# Kernel / DTB / DTBO disabling & handling
 TARGET_NO_KERNEL := false
 TARGET_NO_KERNEL_SOURCE := true
+#TARGET_NO_DTBO := true
+BOARD_BUILD_BOOTIMG := false
+BOARD_BUILD_DTBOIMG := false
+BOARD_BUILD_VENDOR_BOOTIMG := false
+BOARD_BUILD_VBMETAIMAGE := false
 INLINE_KERNEL_BUILDING := false
-BOARD_KERNEL_SEPARATED_DTBO := true
 BOARD_INCLUDE_DTB_IN_BOOTIMG := false
 BOARD_USES_GENERIC_KERNEL_IMAGE := true
 
 # Soong config: force using prebuilt kernel + headers
 SOONG_CONFIG_lineageVars += TARGET_PREBUILT_KERNEL_HEADERS
 TARGET_PREBUILT_KERNEL_HEADERS := $(DEVICE_PATH)/prebuilt/kernel_headers.tar.gz
-
-# Disable rebuilding of prebuilts
-BOARD_BUILD_BOOTIMG         := false
-BOARD_BUILD_DTBOIMG         := false
-BOARD_BUILD_VENDOR_BOOTIMG  := false
-BOARD_BUILD_VBMETAIMAGE     := false
 
 # Kernel build from source
 #TARGET_KERNEL_ARCH := arm64
