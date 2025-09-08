@@ -36,8 +36,8 @@ BOARD_KERNEL_PAGESIZE     := 4096
 BOARD_RAMDISK_OFFSET      := 0x26f08000
 BOARD_KERNEL_TAGS_OFFSET  := 0x07c88000
 BOARD_DTB_OFFSET          := 0x07c88000
-BOARD_RECOVERY_HEADER_VERSION := 2
 BOARD_BOOT_HEADER_VERSION := 4
+BOARD_RECOVERY_HEADER_VERSION := 2
 
 BOARD_RAMDISK_USE_LZ4 := true
 
@@ -59,54 +59,33 @@ BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 bootconfig
 # Display
 TARGET_SCREEN_DENSITY := 213
 
-# Prebuilt kernel & images
-BOARD_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
-BOARD_PREBUILT_BOOTIMAGE := $(DEVICE_PATH)/prebuilt/boot.img
-BOARD_PREBUILT_VENDOR_BOOTIMAGE := $(DEVICE_PATH)/prebuilt/vendor_boot.img
-BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
-BOARD_PREBUILT_DTBIMAGE := $(DEVICE_PATH)/prebuilt/dtb.img
-BOARD_PREBUILT_VBMETAIMAGE := $(DEVICE_PATH)/prebuilt/vbmeta.img
-BOARD_VENDOR_BOOTIMAGE_PREBUILT_DTB := $(BOARD_PREBUILT_DTBIMAGE)
-BOARD_KERNEL_IMAGE_NAME := boot.img
-BOARD_USE_PREBUILT_KERNEL := true
+# GKI prebuilts (paths relative to DEVICE_PATH)
+BOARD_USES_GENERIC_KERNEL_IMAGE := true
+TARGET_FORCE_PREBUILT_KERNEL := true
+TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
+
+# Prebuilt images
+TARGET_PREBUILT_BOOTIMAGE := $(DEVICE_PATH)/prebuilt/boot.img
+TARGET_PREBUILT_VENDOR_BOOTIMAGE := $(DEVICE_PATH)/prebuilt/vendor_boot.img
+TARGET_PREBUILT_DTBO := $(DEVICE_PATH)/prebuilt/dtbo.img
+TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
+TARGET_PREBUILT_VBMETAIMAGE := $(DEVICE_PATH)/prebuilt/vbmeta.img
+
+# Prebuilt kernel headers (UAPI)
+TARGET_PREBUILT_KERNEL_HEADERS := $(DEVICE_PATH)/prebuilt/kernel_headers.tar.gz
 
 # Build recovery (use prebuilt kernel)
 BOARD_BUILD_RECOVERYIMAGE := true
+BOARD_RECOVERY_DTBO_IMAGE := $(DEVICE_PATH)/prebuilt/recovery_dtbo.img
 
-# Kernel / DTB / DTBO disabling & handling
-TARGET_NO_KERNEL := false
-TARGET_NO_KERNEL_SOURCE := true
-#TARGET_NO_DTBO := true
+# Do not build images; consume prebuilts
 BOARD_BUILD_BOOTIMG := false
-BOARD_BUILD_DTBOIMG := false
 BOARD_BUILD_VENDOR_BOOTIMG := false
+BOARD_BUILD_DTBOIMG := false
 BOARD_BUILD_VBMETAIMAGE := false
-INLINE_KERNEL_BUILDING := false
+
+# DTB handling typical for GKI
 BOARD_INCLUDE_DTB_IN_BOOTIMG := false
-BOARD_USES_GENERIC_KERNEL_IMAGE := true
-
-# Soong config: force using prebuilt kernel + headers
-SOONG_CONFIG_lineageVars += TARGET_PREBUILT_KERNEL_HEADERS
-TARGET_PREBUILT_KERNEL_HEADERS := $(DEVICE_PATH)/prebuilt/kernel_headers.tar.gz
-
-# Kernel build from source
-#TARGET_KERNEL_ARCH := arm64
-#TARGET_KERNEL_HEADER_ARCH := arm64
-#TARGET_KERNEL_SOURCE := kernel/samsung/gta9
-#TARGET_KERNEL_CONFIG := gta9_defconfig
-#BOARD_KERNEL_IMAGE_NAME := Image.gz
-
-#TARGET_NO_KERNEL := false
-#INLINE_KERNEL_BUILDING := true
-#BOARD_USES_GENERIC_KERNEL_IMAGE := true
-
-#BOARD_BUILD_BOOTIMG := true
-#BOARD_BUILD_DTBOIMG := true
-#BOARD_BUILD_VENDOR_BOOTIMG := true
-#BOARD_BUILD_VBMETAIMAGE := true
-
-#BOARD_KERNEL_SEPARATED_DTBO := true
-#BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 
 # HIDL
 DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/manifest.xml
@@ -123,7 +102,7 @@ BOARD_VENDOR_DLKMIMAGE_PARTITION_SIZE := 36188160
 #BOARD_VENDOR_KERNEL_MODULES := \
 #    $(VENDOR_PATH)/proprietary/vendor_dlkm/lib/modules/*.ko
     
-# Modules to load at boot (order matters)
+# Modules to load at boot
 #BOARD_VENDOR_KERNEL_MODULES_LOAD := \
 #    vendor_dlkm/lib/modules/wlan_drv_gen4m_6789.ko \
 #    vendor_dlkm/lib/modules/snd-soc-mt6789-afe.ko \
