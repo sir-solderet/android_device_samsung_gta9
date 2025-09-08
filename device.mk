@@ -14,6 +14,9 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 # Setup dalvik vm configs
 $(call inherit-product, frameworks/native/build/phone-xhdpi-4096-dalvik-heap.mk)
 
+# Point Soong to the prebuilt kernel UAPI headers archive (namespaced)
+$(call soong_config_set, lineageVars, TARGET_PREBUILT_KERNEL_HEADERS, $(LOCAL_PATH)/prebuilt/kernel_headers.tar.gz)
+
 # Disable LineageOS API coverage
 WITHOUT_CHECK_API := true
 
@@ -253,7 +256,7 @@ PRODUCT_PACKAGES += \
     hostapd \
     libwifi-hal-wrapper \
     android.hardware.wifi-service
-# not sure why these hals were commented out either
+
 PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(LOCAL_PATH)/configs/wifi/,$(TARGET_COPY_OUT_VENDOR)/etc/wifi)
 
