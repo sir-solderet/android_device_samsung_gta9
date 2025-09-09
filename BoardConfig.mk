@@ -38,6 +38,7 @@ BOARD_KERNEL_TAGS_OFFSET  := 0x07c88000
 BOARD_DTB_OFFSET          := 0x07c88000
 BOARD_BOOT_HEADER_VERSION := 4
 BOARD_RECOVERY_HEADER_VERSION := 2
+BOARD_USES_RECOVERY_AS_BOOT := false
 
 BOARD_RAMDISK_USE_LZ4 := true
 
@@ -51,6 +52,7 @@ BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_RECOVERY_MKBOOTIMG_ARGS += --header_version $(BOARD_RECOVERY_HEADER_VERSION)
+BOARD_RECOVERY_MKBOOTIMG_ARGS += --recovery_dtbo $(BOARD_PREBUILT_RECOVERY_DTBOIMAGE)
 
 BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 bootconfig
 # Boot image config order sourced from this commit:
@@ -59,8 +61,20 @@ BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 bootconfig
 # Display
 TARGET_SCREEN_DENSITY := 213
 
-# GKI prebuilts (paths relative to DEVICE_PATH)
+# GKI / Prebuilt kernel
 BOARD_USES_GENERIC_KERNEL_IMAGE := true
+
+# Force use of prebuilt kernel (skip source tree completely)
+TARGET_FORCE_PREBUILT_KERNEL := true
+
+# Kernel Source for kernel headers
+TARGET_KERNEL_SOURCE := kernel/samsung/gta9
+TARGET_KERNEL_CONFIG := gta9_defconfig
+
+# Name of kernel image (matches prebuilt filename)
+BOARD_KERNEL_IMAGE_NAME := kernel
+
+# Force use of prebuilt kernel (skip kernel source entirely)
 TARGET_FORCE_PREBUILT_KERNEL := true
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
 
@@ -71,14 +85,12 @@ TARGET_PREBUILT_DTBO := $(DEVICE_PATH)/prebuilt/dtbo.img
 TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
 TARGET_PREBUILT_VBMETAIMAGE := $(DEVICE_PATH)/prebuilt/vbmeta.img
 
-# Prebuilt kernel headers (UAPI)
-TARGET_PREBUILT_KERNEL_HEADERS := $(DEVICE_PATH)/prebuilt/kernel_headers.tar.gz
-
-# Build recovery (use prebuilt kernel)
+# Build recovery (with prebuilt kernel)
 BOARD_BUILD_RECOVERYIMAGE := true
-BOARD_RECOVERY_DTBO_IMAGE := $(DEVICE_PATH)/prebuilt/recovery_dtbo.img
+BOARD_INCLUDE_RECOVERY_DTBO := true
+BOARD_PREBUILT_RECOVERY_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/recovery_dtbo.img
 
-# Do not build images; consume prebuilts
+# Do not build boot/vendor_boot/dtbo/vbmeta from source
 BOARD_BUILD_BOOTIMG := false
 BOARD_BUILD_VENDOR_BOOTIMG := false
 BOARD_BUILD_DTBOIMG := false
@@ -158,7 +170,6 @@ TARGET_PRODUCT_PROP += $(DEVICE_PATH)/product.prop
 TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
 
 # Recovery
-BOARD_INCLUDE_RECOVERY_DTBO := true
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 TARGET_RECOVERY_PIXEL_FORMAT := BGRA_8888
 BOARD_HAS_NO_SELECT_BUTTON := true
