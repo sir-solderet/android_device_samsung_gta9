@@ -14,9 +14,6 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 # Setup dalvik vm configs
 $(call inherit-product, frameworks/native/build/phone-xhdpi-4096-dalvik-heap.mk)
 
-# Point Soong to the prebuilt kernel UAPI headers archive (namespaced)
-$(call soong_config_set, lineageVars, TARGET_PREBUILT_KERNEL_HEADERS, $(LOCAL_PATH)/prebuilt/kernel_headers.tar.gz)
-
 # Disable LineageOS API coverage
 WITHOUT_CHECK_API := true
 
