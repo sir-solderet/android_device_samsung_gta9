@@ -11,8 +11,8 @@
     "repository": "android_hardware_samsung",
     "target_path": "hardware/samsung"
   },
-  {
-    "repository": "android_kernel_samsung_gta9",
-    "target_path": "kernel/samsung/gta9"
-  }
+    {
+      "repository": "android_kernel_samsung_gta9",
+      "target_path": "kernel/samsung/gta9"
+    }
 ]
