@@ -17,6 +17,11 @@ $(call inherit-product, frameworks/native/build/phone-xhdpi-4096-dalvik-heap.mk)
 # Insert vendor_dlkm kernel modules
 $(call inherit-product, $(LOCAL_PATH)/vendor_dlkm.mk)
 
+# Prebuilt DTB and DTBO
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/prebuilt/dtb.img:dtb.img \
+    $(LOCAL_PATH)/prebuilt/dtbo.img:dtbo.img
+
 # Disable LineageOS API coverage
 WITHOUT_CHECK_API := true
 
@@ -68,7 +73,7 @@ PRODUCT_PACKAGES += \
 
 # Dynamic Partitions
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
-PRODUCT_BUILD_SUPER_PARTITION := false
+PRODUCT_BUILD_SUPER_PARTITION := true
 
 PRODUCT_PACKAGES += \
     fastbootd
@@ -226,6 +231,7 @@ PRODUCT_SHIPPING_API_LEVEL := 30
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
+    bootable/deprecated-ota \
     $(LOCAL_PATH) \
     hardware/lineage/interfaces/power-libperfmgr \
     hardware/mediatek \
