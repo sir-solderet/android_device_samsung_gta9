@@ -14,8 +14,9 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 # Setup dalvik vm configs
 $(call inherit-product, frameworks/native/build/phone-xhdpi-4096-dalvik-heap.mk)
 
-# Insert vendor_dlkm kernel modules
-$(call inherit-product, $(LOCAL_PATH)/vendor_dlkm.mk)
+# Add the prebuilt vendor_dlkm Soong module
+PRODUCT_PACKAGES += \
+    vendor_dlkm_prebuilt_modules
 
 # Prebuilt DTB and DTBO
 PRODUCT_COPY_FILES += \
