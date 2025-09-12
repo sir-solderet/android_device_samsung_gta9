@@ -76,9 +76,10 @@ TARGET_KERNEL_CONFIG := gta9_defconfig
 # Name of kernel image (matches prebuilt filename)
 BOARD_KERNEL_IMAGE_NAME := kernel
 
-# Force use of prebuilt kernel (skip kernel source entirely)
+# Force use of prebuilt kernel and ramdisk.cpio (skip kernel source entirely)
 TARGET_FORCE_PREBUILT_KERNEL := true
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
+TARGET_PREBUILT_VENDOR_RAMDISK := $(DEVICE_PATH)/prebuilt/ramdisk.cpio
 
 # Prebuilt images
 TARGET_PREBUILT_DTBO := $(DEVICE_PATH)/prebuilt/dtbo.img
@@ -111,6 +112,7 @@ BOARD_FLASH_BLOCK_SIZE := 262144
 BOARD_BOOTIMAGE_PARTITION_SIZE := 67108864
 BOARD_DTBOIMG_PARTITION_SIZE := 512896
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 83886080
+BOARD_USES_VENDOR_BOOTIMAGE := true
 BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := 67108864
 
 BOARD_USES_METADATA_PARTITION := true
