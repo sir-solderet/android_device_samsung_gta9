@@ -14,15 +14,6 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 # Setup dalvik vm configs
 $(call inherit-product, frameworks/native/build/phone-xhdpi-4096-dalvik-heap.mk)
 
-# Add the prebuilt vendor_dlkm Soong module
-PRODUCT_PACKAGES += \
-    vendor_dlkm_prebuilt_modules
-
-# Prebuilt DTB and DTBO
-#PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/dtb.img:dtb.img \
-    $(LOCAL_PATH)/prebuilt/dtbo.img:dtbo.img
-
 # Disable LineageOS API coverage
 WITHOUT_CHECK_API := true
 
