@@ -6,43 +6,55 @@
 
 # Path
 DEVICE_PATH := device/samsung/gta9
+CONFIGS_PATH := $(DEVICE_PATH)/configs
+KERNEL_PATH := device/samsung/gta9-kernel
 VENDOR_PATH := vendor/samsung/gta9
-
-# A/B
-AB_OTA_UPDATER := false
-TARGET_BLOCK_BASED_OTA := true
 
 # Architecture
 TARGET_ARCH := arm64
-TARGET_ARCH_VARIANT := armv8-2a
-TARGET_CPU_VARIANT := cortex-a76
+TARGET_ARCH_VARIANT := armv8-2a-dotprod
 TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_ABI2 :=
-TARGET_CPU_VARIANT_RUNTIME := cortex-a55
+TARGET_CPU_VARIANT := cortex-a76
+TARGET_CPU_VARIANT_RUNTIME := cortex-a76
 
 TARGET_2ND_ARCH := arm
 TARGET_2ND_ARCH_VARIANT := armv8-2a
-TARGET_2ND_CPU_VARIANT := cortex-a55
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
+TARGET_2ND_CPU_VARIANT := cortex-a55
+TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a55
+
+# Enable 64-bit for non-zygote.
+ZYGOTE_FORCE_64 := true
+
+# Force any prefer32 targets to be compiled as 64 bit.
+IGNORE_PREFER32_ON_DEVICE := true
+
+# Updates
+AB_OTA_UPDATER := false
 
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := gta9
 TARGET_NO_BOOTLOADER := true
 
 # Boot Image
-BOARD_KERNEL_BASE         := 0x3fff8000
-BOARD_KERNEL_OFFSET       := 0x00008000
-BOARD_KERNEL_PAGESIZE     := 4096
-BOARD_RAMDISK_OFFSET      := 0x26f08000
-BOARD_KERNEL_TAGS_OFFSET  := 0x07c88000
-BOARD_DTB_OFFSET          := 0x07c88000
 BOARD_BOOT_HEADER_VERSION := 4
-BOARD_RECOVERY_HEADER_VERSION := 2
-BOARD_USES_RECOVERY_AS_BOOT := false
-
+BOARD_USES_GENERIC_KERNEL_IMAGE := true
 BOARD_RAMDISK_USE_LZ4 := true
-BOARD_MOVE_GSI_AVB_KEYS_TO_VENDOR_BOOT := true
+BOARD_INCLUDE_DTB_IN_BOOTIMG := true
+
+BOARD_KERNEL_CMDLINE += bootopt=64S3,32N2,64N2
+
+BOARD_KERNEL_PAGESIZE := 4096
+BOARD_KERNEL_BASE := 0x3fff8000
+BOARD_KERNEL_OFFSET := 0x00008000
+BOARD_RAMDISK_OFFSET := 0x26f08000
+BOARD_KERNEL_TAGS_OFFSET := 0x07c88000
+BOARD_DTB_OFFSET := 0x07c88000
+
+#BOARD_RECOVERY_DTB_OFFSET := 0x00000000
+#BOARD_RECOVERY_HEADER_VERSION := 2
 
 # base and pagesize are usually ignored when BOARD_USES_GENERIC_KERNEL_IMAGE is true,
 # but our bootloader is fussy and cares about these offsets being set correctly.
@@ -53,54 +65,52 @@ BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
-BOARD_RECOVERY_MKBOOTIMG_ARGS += --header_version $(BOARD_RECOVERY_HEADER_VERSION)
-BOARD_RECOVERY_MKBOOTIMG_ARGS += --recovery_dtbo $(BOARD_PREBUILT_RECOVERY_DTBOIMAGE)
+#BOARD_RECOVERY_MKBOOTIMG_ARGS += --header_version $(BOARD_RECOVERY_HEADER_VERSION)
+#BOARD_RECOVERY_MKBOOTIMG_ARGS += --recovery_dtbo $(BOARD_PREBUILT_RECOVERY_DTBOIMAGE)
 
-BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 bootconfig
 # Boot image config order sourced from this commit:
 # https://github.com/xiaomi-mediatek-devs/android_device_xiaomi_mt6895-common/commit/04f779d187e608f9223e1442d4724d7eaaa4ad2a
 
 # Display
 TARGET_SCREEN_DENSITY := 213
 
-# GKI / Prebuilt kernel
-BOARD_USES_GENERIC_KERNEL_IMAGE := true
+# Kernel
+# Kill lineage kernel build task while preserving kernel
+TARGET_NO_KERNEL_OVERRIDE := true
 
-# Force use of prebuilt kernel (skip source tree completely)
-TARGET_FORCE_PREBUILT_KERNEL := true
+# Workaround to make lineage's soong generator work
+TARGET_KERNEL_SOURCE := device/samsung/gta9-kernel/kernel-headers
 
-# Kernel Source for kernel headers
-TARGET_KERNEL_SOURCE := kernel/samsung/gta9
-TARGET_KERNEL_CONFIG := gta9_defconfig
+LOCAL_KERNEL := $(KERNEL_PATH)/Image.gz
+PRODUCT_COPY_FILES += \
+    $(LOCAL_KERNEL):kernel
 
-# Name of kernel image (matches prebuilt filename)
-BOARD_KERNEL_IMAGE_NAME := kernel
+# DTB
+BOARD_PREBUILT_DTBIMAGE_DIR := $(KERNEL_PATH)/dtb
 
-# Force use of prebuilt kernel and ramdisk.cpio (skip kernel source entirely)
-TARGET_FORCE_PREBUILT_KERNEL := true
-TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
-TARGET_PREBUILT_VENDOR_RAMDISK := $(DEVICE_PATH)/prebuilt/ramdisk.cpio
+# Kernel modules
+BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(KERNEL_PATH)/modules.load.vendor_ramdisk))
+BOARD_VENDOR_RAMDISK_KERNEL_MODULES := $(addprefix $(KERNEL_PATH)/modules/, $(BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD))
 
-# Prebuilt images
-TARGET_PREBUILT_DTBO := $(DEVICE_PATH)/prebuilt/dtbo.img
-TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
+# Also add recovery modules to vendor ramdisk
+BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD := $(strip $(shell cat $(KERNEL_PATH)/modules.load.recovery))
+RECOVERY_MODULES := $(addprefix $(KERNEL_PATH)/modules/, $(BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD))
 
-# Build recovery (with prebuilt kernel)
-BOARD_BUILD_RECOVERYIMAGE := true
-BOARD_INCLUDE_RECOVERY_DTBO := true
-BOARD_PREBUILT_RECOVERY_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/recovery_dtbo
+# Prevent duplicated entries (to solve duplicated build rules problem)
+BOARD_VENDOR_RAMDISK_KERNEL_MODULES := $(sort $(BOARD_VENDOR_RAMDISK_KERNEL_MODULES) $(RECOVERY_MODULES))
 
-# DTB handling typical for GKI
-BOARD_INCLUDE_DTB_IN_BOOTIMG := false
+# Vendor modules (installed to vendor_dlkm)
+BOARD_VENDOR_KERNEL_MODULES_LOAD := $(strip $(shell cat $(KERNEL_PATH)/modules.load))
+BOARD_VENDOR_KERNEL_MODULES := $(wildcard $(KERNEL_PATH)/modules/*.ko)
+
+# recovery_dtbo
+#BOARD_PREBUILT_RECOVERY_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/recovery_dtbo
 
 # Allow prebuilt ELF files (kernel modules) in vendor_dlkm
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 
-# HIDL
-DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/manifest.xml
-DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := \
-    $(DEVICE_PATH)/framework_compatibility_matrix.xml \
-    $(DEVICE_PATH)/compatibility_matrix.xml
+# List of kernel modules to be loaded from vendor_dlkm partition during second stage init
+BOARD_VENDOR_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/modules.load.second_stage))
 
 # Filesystems
 TARGET_USERIMAGES_USE_EXT4 := true
@@ -146,9 +156,9 @@ TARGET_COPY_OUT_VENDOR := vendor
 TARGET_COPY_OUT_VENDOR_DLKM := vendor_dlkm
 
 # Platform
-TARGET_BOARD_PLATFORM := mt6789
-BOARD_HAS_MTK_HARDWARE := true
 BOARD_VENDOR := samsung
+BOARD_HAS_MTK_HARDWARE := true
+TARGET_BOARD_PLATFORM := mt6789
 
 # Properties
 TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
@@ -156,18 +166,33 @@ TARGET_PRODUCT_PROP += $(DEVICE_PATH)/product.prop
 TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
 
 # Recovery
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
+TARGET_NO_RECOVERY := false
+TARGET_RECOVERY_IN_BOOT := true
+BOARD_MOVE_GSI_AVB_KEYS_TO_VENDOR_BOOT := true
+BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.mt6789
 TARGET_RECOVERY_PIXEL_FORMAT := BGRA_8888
 BOARD_HAS_NO_SELECT_BUTTON := true
+
+# Release tool
+TARGET_RELEASETOOLS_EXTENSIONS := $(DEVICE_PATH)/releasetools.py
 
 # RIL
 ENABLE_VENDOR_RIL_SERVICE := true
 
-# sepolicy_vndr
+# SEPolicy
 include device/mediatek/sepolicy_vndr/SEPolicy.mk
 
+# VINTF
+DEVICE_MANIFEST_FILE += $(CONFIGS_PATH)/vintf/manifest.xml
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := \
+    $(CONFIGS_PATH)/vintf/framework_compatibility_matrix.xml \
+    $(CONFIGS_PATH)/vintf/compatibility_matrix.xml \
+    hardware/samsung/vintf/samsung_framework_compatibility_matrix.xml
+
 # SPL
-VENDOR_SECURITY_PATCH := 2025-07-01
+BOOT_SECURITY_PATCH := 2025-04-01
+VENDOR_SECURITY_PATCH := $(BOOT_SECURITY_PATCH)
 
 # Verified Boot (AVB)
 BOARD_AVB_ENABLE := true
@@ -191,10 +216,14 @@ BOARD_AVB_VBMETA_VENDOR_ALGORITHM := SHA256_RSA2048
 BOARD_AVB_VBMETA_VENDOR_ROLLBACK_INDEX := 1
 BOARD_AVB_VBMETA_VENDOR_ROLLBACK_INDEX_LOCATION := 3
 
+# VNDK
+BOARD_VNDK_VERSION := current
+
 # Wi-Fi
 WPA_SUPPLICANT_VERSION := VER_0_8_X
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
 BOARD_HOSTAPD_DRIVER := NL80211
+
 WIFI_DRIVER_FW_PATH_PARAM := "/dev/wmtWifi"
 WIFI_DRIVER_FW_PATH_STA := "STA"
 WIFI_DRIVER_FW_PATH_AP := "AP"

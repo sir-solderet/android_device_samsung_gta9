@@ -19,7 +19,7 @@ PRODUCT_PACKAGES += \
     vendor_dlkm_prebuilt_modules
 
 # Prebuilt DTB and DTBO
-PRODUCT_COPY_FILES += \
+#PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/dtb.img:dtb.img \
     $(LOCAL_PATH)/prebuilt/dtbo.img:dtbo.img
 

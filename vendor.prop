@@ -145,11 +145,6 @@ ro.vendor.mtk_sec_video_path_support=1
 ro.vendor.mtk_video_hevc_enc_support=1
 vendor.mtk.vdec.waitkeyframeforplay=9
 
-# Mediatek
-ro.vendor.mediatek.platform=MT6789
-ro.vendor.mediatek.version.branch=alps-mp-v0.mssi1.tc10sp
-ro.vendor.mediatek.version.release=alps-mp-v0.mp1.tc10sp-hq.V1.61.1_huaqin.v0mp1.k69v1.64.titan.white.tiger_P10
-
 # Radio
 persist.radio.multisim.config=dsds
 persist.vendor.md_c2k_cap_dep_check=0
