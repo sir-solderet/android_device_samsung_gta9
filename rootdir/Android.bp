@@ -87,3 +87,10 @@ prebuilt_etc {
     src: "etc/ueventd.mt6789.rc",
     vendor: true,
 }
+
+prebuilt_etc {
+    name: "init.recovery.mt6789.rc",
+    filename: "ueventd.rc",
+    src: "etc/init.recovery.mt6789.rc",
+    vendor: true,
+}
