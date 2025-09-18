@@ -203,10 +203,8 @@ PRODUCT_PACKAGES += \
     init.project.rc \
     init.sensor_2_0.rc \
     init.target.rc \
+    init.recovery.mt6789.rc \
     ueventd.mt6789.rc
-
-PRODUCT_PACKAGES += \
-    init.recovery.mt6789.rc
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/etc/fstab.mt6789::$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.mt6789
