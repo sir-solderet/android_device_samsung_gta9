@@ -1,0 +1,40 @@
+# on init
+#    setprop sys.usb.ffs.aio_compat 1
+#    setprop sys.usb.configfs 1
+
+# Recovery init for Samsung Galaxy Tab A9
+on early-init
+    mount debugfs debugfs /sys/kernel/debug
+    chmod 0755 /sys/kernel/debug
+
+on init
+    export PATH /sbin:/system/bin:/system/xbin
+    export LD_LIBRARY_PATH /sbin
+    
+    mount tmpfs tmpfs /tmp size=80m
+    
+    # Create device nodes
+   # mknod /dev/block/mmcblk0 b 179 0
+   # mknod /dev/block/mmcblk0p1 b 179 1
+    
+on fs
+    # Mount essential partitions for recovery
+    wait /dev/block/by-name/metadata
+    mount ext4 /dev/block/by-name/metadata /metadata
+    
+on boot
+    # Set up recovery environment
+    chmod 0644 /proc/cmdline
+    chmod 0644 /proc/version
+    
+    # Start recovery services
+    start adbd
+    
+service recovery /sbin/recovery
+    class core
+    seclabel u:r:recovery:s0
+
+service adbd /sbin/adbd --root_seclabel=u:r:su:s0 --device_banner=recovery
+    disabled
+    socket adbd stream 660 system system
+    seclabel u:r:adbd:s0
