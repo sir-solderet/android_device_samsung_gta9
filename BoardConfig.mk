@@ -34,6 +34,9 @@ IGNORE_PREFER32_ON_DEVICE := true
 # Updates
 AB_OTA_UPDATER := false
 
+# OTA
+BLOCK_BASED_OTA := false
+
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := gta9
 TARGET_NO_BOOTLOADER := true
@@ -117,7 +120,7 @@ BOARD_MOVE_GSI_AVB_KEYS_TO_VENDOR_BOOT := true
 
 # Filesystems
 TARGET_USERIMAGES_USE_EXT4 := true
-TARGET_USERIMAGES_USE_F2FS := true
+#TARGET_USERIMAGES_USE_F2FS := true
 BOARD_HAS_LARGE_FILESYSTEM := true
 
 # Partitions
@@ -133,7 +136,7 @@ BOARD_USES_METADATA_PARTITION := true
 # Partitions (Dynamic)
 BOARD_SUPER_PARTITION_SIZE := 10328473600
 BOARD_SUPER_PARTITION_GROUPS := main
-BOARD_MAIN_SIZE := 10324279296
+BOARD_MAIN_SIZE := 5157945344
 BOARD_MAIN_PARTITION_LIST := system system_ext product vendor odm vendor_dlkm
 
 # PARTITION_SIZE for each dynamic partition
@@ -186,8 +189,9 @@ include device/mediatek/sepolicy_vndr/SEPolicy.mk
 DEVICE_MANIFEST_FILE += $(CONFIGS_PATH)/vintf/manifest.xml
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := \
     $(CONFIGS_PATH)/vintf/framework_compatibility_matrix.xml \
-    $(CONFIGS_PATH)/vintf/compatibility_matrix.xml \
-    hardware/samsung/vintf/samsung_framework_compatibility_matrix.xml
+    hardware/mediatek/vintf/mediatek_framework_compatibility_matrix.xml \
+    hardware/samsung/vintf/samsung_framework_compatibility_matrix.xml \
+    vendor/lineage/config/device_framework_matrix.xml
 
 # SPL
 BOOT_SECURITY_PATCH := 2025-04-01
