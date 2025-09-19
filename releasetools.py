@@ -16,29 +16,40 @@
 
 import common
 
+
+def FullOTA_InstallBegin(info):
+    """Force file-based OTA (disable block-based OTA)."""
+    common.OPTIONS.block_based = False
+    info.script.Print("⚡ Using file-based OTA (block-based disabled)")
+
+
 def FullOTA_Assertions(info):
-  """Asserts that the device is the correct model. This is a crucial safety check."""
-
-  info.Print("Checking for target device...")
-
-  # This is the standard and most reliable way to check the device model.
-  # It prevents the ROM from being installed on any device that isn't a 'gta9'.
-  info.script.AppendExtra('assert(getprop("ro.product.device") == "gta9" || getprop("ro.build.product") == "gta9");')
-  return
+    """Asserts that the device is the correct model."""
+    info.script.Print("Checking for target device...")
+    info.script.AppendExtra(
+        'assert(getprop("ro.product.device") == "gta9" || '
+        'getprop("ro.build.product") == "gta9");'
+    )
+    return
 
 
 def FullOTA_InstallEnd(info):
-  """Post-install actions. Not needed for this build as there's no special firmware."""
-
-  info.Print("Device patching complete.")
-  return
+    """Post-install actions. Not needed for this build as there's no special firmware."""
+    info.script.Print("Device patching complete.")
+    return
 
 
 def IncrementalOTA_Assertions(info):
-  """Assertions for incremental OTAs. Not used for initial bringup."""
-  pass
+    """Assertions for incremental OTAs. Not used for initial bringup."""
+    pass
+
+
+def IncrementalOTA_InstallBegin(info):
+    """Force file-based OTA for incrementals too."""
+    common.OPTIONS.block_based = False
+    info.script.Print("⚡ Using file-based OTA (block-based disabled)")
 
 
 def IncrementalOTA_InstallEnd(info):
-  """Post-install actions for incremental OTAs. Not used for initial bringup."""
-  pass
+    """Post-install actions for incremental OTAs. Not used for initial bringup."""
+    pass
