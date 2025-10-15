@@ -14,15 +14,21 @@ $(call inherit-product, device/samsung/gta9/device.mk)
 # Inherit some common LineageOS stuff.
 $(call inherit-product, vendor/lineage/config/common_full_tablet.mk)
 
+# Inherit the proprietary files
+$(call inherit-product, vendor/samsung/gta9/gta9-vendor.mk)
+
+## Device-specific Information ##
 PRODUCT_NAME := lineage_gta9
 PRODUCT_DEVICE := gta9
 PRODUCT_BRAND := samsung
 PRODUCT_MODEL := SM-X115
 PRODUCT_MANUFACTURER := samsung
 
+# GMS
 PRODUCT_GMS_CLIENTID_BASE := android-samsung
 
+# Build Fingerprint
 PRODUCT_BUILD_PROP_OVERRIDES += \
-    
+
 
 BUILD_FINGERPRINT := samsung/gta9xx/gta9:12/SP1A.210812.016/X115XXU4CYE5:user/release-keys

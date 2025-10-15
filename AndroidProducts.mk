@@ -10,5 +10,4 @@ PRODUCT_MAKEFILES := \
 COMMON_LUNCH_CHOICES := \
     lineage_gta9-userdebug \
     lineage_gta9-eng \
-    lineage_gta9-user \
-    lineage_gta9-bp1a-userdebug
+    lineage_gta9-user
